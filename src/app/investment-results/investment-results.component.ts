@@ -1,5 +1,5 @@
 import { InvestmentService } from './investiment-service.service';
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 
 @Component({
@@ -12,9 +12,7 @@ export class InvestmentResultsComponent {
   private investmentService = inject(InvestmentService);
 
   // Trả về dữ liệu kết quả từ InvestmentService
-  get results() {
-    return this.investmentService.resultData || []; // Xử lý trường hợp `resultData` là `undefined`
-  }
+   results=computed(() => this.investmentService.resultData()); // Sử dụng computed để theo dõi sự thay đổi của resultData
 }
 
 
