@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { InvestmentInput } from '../investment.input.model';
+import { signal } from '@angular/core'; // Import signal từ Angular core
 @Injectable({
   providedIn: 'root'
 })
 export class InvestmentService {
-  resultData?: {
+  resultData= signal< {
     year: number;
     interest: number;
     valueEndOfYear: number;
     annualInvestment: number;
     totalInterest: number;
     totalAmountInvested: number;
-  }[]; // Đảm bảo kiểu là mảng của đối tượng, không phải đơn lẻ
+  }[] | undefined>(undefined); // Đảm bảo kiểu là mảng của đối tượng, không phải đơn lẻ
 
   oncalculateInvestmentResults(data: InvestmentInput) {
     const { initialInvestment, annualInvestment, expectedReturn, duration } = data;
@@ -36,8 +37,7 @@ export class InvestmentService {
         totalAmountInvested: initialInvestment + annualInvestment * year,
       });
     }
-
-    this.resultData = annualData; // Gán lại kết quả vào mảng resultData
+   this.resultData.set(annualData); // Cập nhật dữ liệu hàng năm vào biến `resultData`
   }
 
   constructor() {}
